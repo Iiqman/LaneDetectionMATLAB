@@ -4,6 +4,10 @@
 
 Project ini bertujuan untuk melakukan **deteksi garis jalan** pada citra atau video menggunakan **Pengolahan Citra Digital**. Dengan memanfaatkan teknik seperti **deteksi tepi Canny**, **Transformasi Hough**, dan **analisis garis**, aplikasi ini mampu mendeteksi garis kiri dan kanan serta garis tengah jalan pada gambar dan video.
 
+### Makalah:
+*Ongoing BAB 1
+https://docs.google.com/document/d/1xOZaWGbHqvW25ZGGR-eh39nMWkPUY915g1pBokkqs00/edit?usp=sharing
+
 ### Fitur:
 
 * **Deteksi garis jalan** menggunakan teknik **Hough Transform**.
