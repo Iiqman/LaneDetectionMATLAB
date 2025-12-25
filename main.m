@@ -88,29 +88,38 @@ end
 % FUNGSI UJI GAMBAR (KALIBRASI PARAMETER)
 % ==================================================
 function testImages(ax)
-    % Cek apakah folder images ada dan berisi gambar
-    files = dir('images/*.{jpg,png}');  % Menambahkan PNG support
+    % Dialog pilih gambar (bisa pilih banyak)
+    [files, path] = uigetfile( ...
+        {'*.jpg;*.png;*.jpeg','File Gambar (*.jpg, *.png, *.jpeg)'}, ...
+        'Pilih Gambar untuk Kalibrasi', ...
+        'MultiSelect','on');
 
-    if isempty(files)
-        uialert(ax.Parent, 'Folder images kosong atau tidak ditemukan!', 'Error');
+    % Jika user batal memilih
+    if isequal(files,0)
+        uialert(ax.Parent, 'Tidak ada gambar yang dipilih!', 'Info');
         return;
     end
 
-    disp('Isi folder images:');
-    disp({files.name});  % Debugging, tampilkan file yang ada di folder images
+    % Jika hanya pilih 1 gambar → ubah jadi cell
+    if ischar(files)
+        files = {files};
+    end
 
+    % Loop semua gambar yang dipilih
     for i = 1:length(files)
-        img = imread(fullfile('images', files(i).name));
+        imgPath = fullfile(path, files{i});
+        img = imread(imgPath);
 
         % ===== PIPELINE DETEKSI =====
         gray  = preprocessImage(img);
         edges = detectEdges(gray);
         lane  = detectLaneLines(edges);
-        output = drawLane(img, lane);  % Panggil dengan img (frame) dan lane
+        output = drawLane(img, lane);
 
         imshow(output,'Parent',ax);
-        title(ax, ['Kalibrasi: ', files(i).name]);
+        title(ax, ['Kalibrasi: ', files{i}]);
         drawnow;
-        pause(1.5);  % Menunda tampilan gambar selama 1.5 detik
+        pause(1.5);
     end
 end
+
